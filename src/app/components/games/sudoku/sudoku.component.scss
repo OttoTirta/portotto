@@ -1,0 +1,44 @@
+.sudoku-cell:hover {
+    background-color: rgb(224, 224, 224);
+    cursor: pointer;
+}
+
+.active-cell {
+    background-color: rgb(144, 142, 142);
+    &:hover {
+        background-color: rgb(144, 142, 142);
+    }
+}
+
+.neighbour-cell {
+    background-color: rgb(230, 240, 250);
+}
+
+.sudoku-cell.locked-cell {
+    color: #989898;
+    cursor: default;
+
+    &:hover {
+        background-color: inherit;
+    }
+}
+
+.loading-icon {
+    animation: rotate 1s linear infinite; // Continuous rotation
+
+    @keyframes rotate {
+        0% {
+        transform: rotate(0deg); // Start from 0 degrees
+        }
+        100% {
+        transform: rotate(360deg); // End at 360 degrees
+        }
+    }
+}
+
+.disabled-sudoku-button {
+    background-color: rgb(234, 234, 234);
+    border-color:  rgb(184, 184, 184);
+    color: rgb(210, 210, 210);
+    cursor: default;
+}
