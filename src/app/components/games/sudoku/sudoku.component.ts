@@ -20,7 +20,7 @@ type cellIdx = {
 export class SudokuComponent {
   private sudokuSolution: number[][] = [];
   private timerInterval: any;
-  private playTime: number = 3660;
+  private playTime: number = 0;
 
   sudokuTable!: any[][];
   activeCell: cellIdx = {
@@ -58,11 +58,23 @@ export class SudokuComponent {
   }
 
   get formatedPlayTime() {
-    const minutes = String(Math.floor(this.playTime / 60) % 60);
-    const hour = Math.floor(this.playTime / 3600);
+    return this.secondsToFormattedTime(this.playTime);
+  }
+
+  get bestTime() {
+    return this.sudokuService.getBestTime();
+  }
+
+  get formattedBestTime() {
+    return this.secondsToFormattedTime(this.bestTime);
+  }
+
+  secondsToFormattedTime(seconds: number) {
+    const minutes = String(Math.floor(seconds / 60) % 60);
+    const hour = Math.floor(seconds / 3600);
     const formattedHours = hour > 0 ? `${hour}:` : ''; 
     const formattedMinutes = minutes.length < 2?  minutes.padStart(2, '0') : minutes;
-    const formattedSeconds = String(this.playTime % 60).padStart(2, '0');
+    const formattedSeconds = String(seconds % 60).padStart(2, '0');
   
     return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
   }
@@ -79,7 +91,7 @@ export class SudokuComponent {
 
     this.hasMovement = false;
     this.isStartGame = true;
-    this.playTime = 0;
+    this.playTime = 400;
     this.isHasEmptyCell = true;
     this.isHasDuplicate = false;
 
@@ -150,10 +162,10 @@ export class SudokuComponent {
     if(action == 'Reset') {
       this.resetTable();
     } else {
-      this.setCellValue(this.activeCell, action == 'Delete' ? 0 : action);
-      this.checkWinGame();
       this.hasMovement = true;
+      this.setCellValue(this.activeCell, action == 'Delete' ? 0 : action);
       this.saveProgress();
+      this.checkWinGame();
     }
   }
 
@@ -286,6 +298,10 @@ export class SudokuComponent {
     this.isHasEmptyCell = false;
     this.isHasDuplicate = false;
     this.stopTimer();
+    if(this.bestTime > this.playTime || this.bestTime == 0) {
+      this.sudokuService.saveBestTime(this.playTime);
+    }
+    this.sudokuService.removeSudokuProgress();
   }
 
   generateRandomNumber() {

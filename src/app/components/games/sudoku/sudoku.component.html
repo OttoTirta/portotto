@@ -5,12 +5,21 @@
 			*ngIf="isWinGame"
 			class="win-modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50"
 		>
-			<div class="bg-white rounded-lg shadow-lg p-8 w-96 flex flex-col gap-4">
-				<div class="text-5xl font-semibold text-center">YOU WIN!</div>
-				<p>This is the content inside the modal. You can add more text, images, or any content here.</p>
+			<div class="bg-[#F5F5F5] rounded-lg shadow-lg p-8 w-96 flex flex-col gap-4">
+				<div class="text-5xl font-semibold text-center text-[#48CFCB]">YOU WIN!</div>
+        <div class="flex gap-1 flex-col text-[#229799]">
+          <div class="text-xl flex gap-1">
+            <div class="w-1/2 flex justify-end">Your Time</div>
+            <div>: <span>{{formatedPlayTime}}</span></div>
+          </div>
+          <div class="text-xl flex gap-1">
+            <div class="w-1/2 flex justify-end">Your Best Time</div>
+            <div>: <span>{{formattedBestTime}}</span></div>
+          </div>
+        </div>
 				<div class="w-full">
 					<button
-						class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full"
+						class="bg-[#424242] text-[#48CFCB] px-4 py-2 rounded-lg hover:bg-[#626262] w-full"
 						(click)="resetTable()"
 					>
 						New Game
