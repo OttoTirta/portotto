@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { SudokuServiceService } from '../../../services/sudokuService/sudoku-service.service';
+import { LoadingComponent } from "../../shared/loading/loading.component";
 
 
 type cellIdx = {
@@ -12,11 +13,15 @@ type cellIdx = {
 
 @Component({
   selector: 'app-sudoku',
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingComponent],
   templateUrl: './sudoku.component.html',
   styleUrl: './sudoku.component.scss',
 })
 export class SudokuComponent {
+  private sudokuSolution: number[][] = [];
+  private timerInterval: any;
+  private playTime: number = 3660;
+
   sudokuTable!: any[][];
   activeCell: cellIdx = {
     tableRowIdx: -1,
@@ -25,21 +30,41 @@ export class SudokuComponent {
     boxColIdx: -1
   }
 
+  isStartGame: boolean = false;
   isHasDuplicate: boolean = false;
   isHasEmptyCell: boolean = true;
+  hasSavedGame: boolean = false;
+  hasMovement: boolean = false;
 
   isLoading: boolean = false;
 
-  activeCellNeighbours: cellIdx[] | null = null;
+  activeCellNeighbours!: cellIdx[] | null;
 
   sudokuButton = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'Delete','Reset'];
 
-  constructor(private sudokuService: SudokuServiceService) {
-    this.resetTable();
+  constructor(
+    private sudokuService: SudokuServiceService
+  ) {
+    this.hasSavedGame = sudokuService.hasSavedGame;
+    this.hasMovement = this.hasSavedGame;
   }
 
   get isAnyActiveCell() {
     return this.activeCell.boxRowIdx !== -1;
+  }
+
+  get isWinGame() {
+    return !this.isHasEmptyCell && !this.isHasDuplicate;
+  }
+
+  get formatedPlayTime() {
+    const minutes = String(Math.floor(this.playTime / 60) % 60);
+    const hour = Math.floor(this.playTime / 3600);
+    const formattedHours = hour > 0 ? `${hour}:` : ''; 
+    const formattedMinutes = minutes.length < 2?  minutes.padStart(2, '0') : minutes;
+    const formattedSeconds = String(this.playTime % 60).padStart(2, '0');
+  
+    return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
   }
 
   sudokuCell(cellIndex: cellIdx) {
@@ -47,9 +72,24 @@ export class SudokuComponent {
   }
 
   resetTable() {
+    if(this.isLoading) return
+    this.stopTimer();
+
+    this.sudokuService.removeSudokuProgress();
+
+    this.hasMovement = false;
+    this.isStartGame = true;
+    this.playTime = 0;
     this.isHasEmptyCell = true;
     this.isHasDuplicate = false;
+
+    if(this.isAnyActiveCell){
+      this.turnOffActiveCellNeighboursHighlight();
+      this.deactiveCell();
+    }
     this.resetActiveCell();
+    this.activeCellNeighbours = null;
+
     const defaultSudokuCell = {
       val: 0,
       isActive: false,
@@ -94,6 +134,7 @@ export class SudokuComponent {
         this.resetActiveCell();
       }
     }
+    if(this.hasMovement) this.saveProgress();
   }
 
   resetActiveCell() {
@@ -111,7 +152,18 @@ export class SudokuComponent {
     } else {
       this.setCellValue(this.activeCell, action == 'Delete' ? 0 : action);
       this.checkWinGame();
+      this.hasMovement = true;
+      this.saveProgress();
     }
+  }
+
+  saveProgress() {
+    const savingData = {
+      sudokuGrid: this.sudokuTable,
+      activeCell: this.activeCell,
+      activeCellNeighbours: this.activeCellNeighbours
+    }
+    this.sudokuService.saveSudokuProgress(savingData);
   }
 
   deactiveCell() {
@@ -233,6 +285,7 @@ export class SudokuComponent {
 
     this.isHasEmptyCell = false;
     this.isHasDuplicate = false;
+    this.stopTimer();
   }
 
   generateRandomNumber() {
@@ -240,27 +293,36 @@ export class SudokuComponent {
     this.sudokuService.getSudokuGrid().subscribe({
       next: (res) => {
         const responseSudoku = res.newboard.grids[0].value;
-        for (let tableColIdx = 0; tableColIdx < 3; tableColIdx++) {
-          for (let tableRowIdx = 0; tableRowIdx < 3; tableRowIdx++) {
-            for (let boxColIdx = 0; boxColIdx < 3; boxColIdx++) {
-              for (let boxRowIdx = 0; boxRowIdx < 3; boxRowIdx++) {
-                const resCol = (3*tableColIdx) + boxColIdx;
-                const resRow = (3*tableRowIdx) + boxRowIdx;
-                const currentCell = this.sudokuCell({
-                  boxColIdx: boxColIdx,
-                  boxRowIdx: boxRowIdx,
-                  tableColIdx: tableColIdx,
-                  tableRowIdx: tableRowIdx
-                })
-                currentCell.val = responseSudoku[resCol][resRow];
-                currentCell.isLocked = currentCell.val != 0;
-              }
-            }
-          }
-        }
+        this.sudokuSolution = res.newboard.grids[0].solution;
+        this.fillSudokuTable(responseSudoku);
+        this.isLoading = false;
+        this.startTimer();
+      },
+      error: (err) => {
         this.isLoading = false;
       }
     })
+  }
+
+  fillSudokuTable(sudokuGrid: number[][]) {
+    for (let tableColIdx = 0; tableColIdx < 3; tableColIdx++) {
+      for (let tableRowIdx = 0; tableRowIdx < 3; tableRowIdx++) {
+        for (let boxColIdx = 0; boxColIdx < 3; boxColIdx++) {
+          for (let boxRowIdx = 0; boxRowIdx < 3; boxRowIdx++) {
+            const resCol = (3*tableColIdx) + boxColIdx;
+            const resRow = (3*tableRowIdx) + boxRowIdx;
+            const currentCell = this.sudokuCell({
+              boxColIdx: boxColIdx,
+              boxRowIdx: boxRowIdx,
+              tableColIdx: tableColIdx,
+              tableRowIdx: tableRowIdx
+            })
+            currentCell.val = sudokuGrid[resCol][resRow];
+            currentCell.isLocked = currentCell.val != 0;
+          }
+        }
+      }
+    }
   }
 
   getRandomInt(min: number, max: number) {
@@ -268,8 +330,6 @@ export class SudokuComponent {
   }
 
   keyboardEventListener(keyPressed: KeyboardEvent) {
-    console.log(keyPressed);
-    
     switch(true) {
       case(keyPressed.code.includes('Digit') && this.isAnyActiveCell):
         this.onClickActionButton(keyPressed.key);
@@ -278,11 +338,47 @@ export class SudokuComponent {
         this.onClickActionButton(0);
         break;
       case(keyPressed.code == 'Escape' && this.isAnyActiveCell):
-      this.turnOffActiveCellNeighboursHighlight();
+        this.turnOffActiveCellNeighboursHighlight();
         this.deactiveCell();
         this.resetActiveCell();
         this.activeCellNeighbours = null;
         break;
+      case(keyPressed.code == 'KeyR'):
+        this.resetTable();
+        break;
+      // Cheat
+      case(keyPressed.code == 'KeyJ'):
+        this.sudokuSolution[0][0] = 0;
+        this.fillSudokuTable(this.sudokuSolution);
+        break;
     }
+  }
+
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      this.playTime++;
+      if(this.hasMovement) {
+        this.sudokuService.saveTimer(this.playTime);
+      }
+    }, 1000);
+  }
+
+  stopTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+  }
+
+  continueSavedGame() {
+    this.isStartGame = true;
+    this.playTime = this.sudokuService.getTimer();
+
+    const savedData = this.sudokuService.getSavedSudokuProgress();
+    
+    this.sudokuTable = savedData.sudokuGrid;
+    this.activeCell = savedData.activeCell;
+    this.activeCellNeighbours = savedData.activeCellNeighbours;
+
+    this.startTimer();
   }
 }

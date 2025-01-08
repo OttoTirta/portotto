@@ -1,19 +1,63 @@
 <div class="h-screen" tabindex="0" (keyup)="keyboardEventListener($event)">
   <div class="flex items-center justify-center h-full">
-		<div class="flex flex-col gap-6">
-			<div
-				*ngIf="isLoading"
-				class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50"
-			>
-				<div class="loading-icon w-[10vh] h-[10vh]">
-					<img src="assets/icons/loading-icon.png" alt="loading-icon">
+		<!-- Win Modal -->
+		<div
+			*ngIf="isWinGame"
+			class="win-modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50"
+		>
+			<div class="bg-white rounded-lg shadow-lg p-8 w-96 flex flex-col gap-4">
+				<div class="text-5xl font-semibold text-center">YOU WIN!</div>
+				<p>This is the content inside the modal. You can add more text, images, or any content here.</p>
+				<div class="w-full">
+					<button
+						class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full"
+						(click)="resetTable()"
+					>
+						New Game
+					</button>
 				</div>
 			</div>
-			<div *ngIf="!isHasEmptyCell && !isHasDuplicate">
-				Menang
+		</div>
+		<!-- Win Modal -->
+
+		<!-- Start Game Modal -->
+		<div
+			*ngIf="!isStartGame"
+			class="win-modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50"
+		>
+			<div class="bg-white rounded-lg shadow-lg p-8 w-96 flex flex-col gap-4">
+				<div class="text-5xl font-semibold text-center">SUDOKU</div>
+				<p>You have saved progress of previous game, do you want to continue or start new game?</p>
+				<div class="flex gap-2">
+					<button
+            *ngIf="hasSavedGame"
+						class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full"
+						(click)="continueSavedGame()"
+					>
+						Continue
+					</button>
+					<button
+						class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full"
+            [ngClass]="{'hover:bg-slate-400 bg-slate-300': hasSavedGame}"
+						(click)="resetTable()"
+					>
+						New Game
+					</button>
+				</div>
 			</div>
+		</div>
+		<!-- Start Game Modal -->
+
+		<div class="flex flex-col gap-6">
+			<loading
+				*ngIf="isLoading"
+				class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50"
+			></loading>
 			<!-- Sudoku table start -->
 			<div>
+				<div class="timer">
+					{{formatedPlayTime}}
+				</div>
 				<div 
 					*ngFor="let tableRow of sudokuTable; let tR = index"
 					class="flex"
@@ -37,7 +81,7 @@
 				</div>
 			</div>
 			<!-- Sudoku table end -->
-			<div class="flex flex-wrap gap-3 max-w-[63vh]">
+			<div class="flex flex-wrap gap-3 max-w-[63vh]" *ngIf="isStartGame">
 				<div
 					*ngFor="let buttonVal of sudokuButton"
 					class="border border-[#a6a5a5] rounded-lg py-3 px-[18px] cursor-pointer"
