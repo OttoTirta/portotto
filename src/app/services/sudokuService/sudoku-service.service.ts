@@ -10,6 +10,7 @@ export class SudokuServiceService {
   private sudokuLink = 'https://sudoku-api.vercel.app/api/dosuku';
   private timerKey = 'sudoku-timer';
   private sudokuProgressKey = 'sudoku-grid';
+  private bestTimeKey = 'sudoku-best-time';
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService
@@ -21,6 +22,14 @@ export class SudokuServiceService {
 
   getSudokuGrid() {
     return this.http.get<any>(this.sudokuLink);
+  }
+
+  saveBestTime(time: number) {
+    this.localStorageService.setItem(this.bestTimeKey, time);
+  }
+
+  getBestTime() {
+    return this.localStorageService.getItem(this.bestTimeKey) ?? 0;
   }
 
   saveTimer(time: number) {
