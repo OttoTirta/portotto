@@ -91,7 +91,7 @@ export class SudokuComponent {
 
     this.hasMovement = false;
     this.isStartGame = true;
-    this.playTime = 400;
+    this.playTime = 0;
     this.isHasEmptyCell = true;
     this.isHasDuplicate = false;
 

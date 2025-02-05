@@ -1,0 +1,17 @@
+.header-navbar {
+  >div {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-right: solid #BCCCDC 2px;
+
+    &:last-child {
+      border-right: solid #BCCCDC 0px;
+    }
+  }
+  >div:hover {
+    cursor: pointer;
+    background-color: #BCCCDC;
+  }
+}
