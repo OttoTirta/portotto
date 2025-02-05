@@ -1,0 +1,11 @@
+<div
+	class="w-full bg-[#D9EAFD] flex justify-between text-[#1d5e9e] font-proza"
+>
+	<div class="flex header-navbar">
+		<div 
+			*ngFor="let menu of navbarMenu"
+			(click)="onClickNavbarMenu(menu.id)"
+		>{{menu.val}}</div>
+	</div>
+	<div>Lang</div>
+</div>

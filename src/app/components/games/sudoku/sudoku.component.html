@@ -1,9 +1,12 @@
 <div class="h-screen" tabindex="0" (keyup)="keyboardEventListener($event)">
-  <div class="flex items-center justify-center h-full">
+  <div
+		class="flex items-center justify-center h-full"
+		[ngClass]="{'bg-black bg-opacity-25' : isWinGame || !isStartGame}"
+	>
 		<!-- Win Modal -->
 		<div
 			*ngIf="isWinGame"
-			class="win-modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50"
+			class="win-modal inset-0 flex items-center justify-center z-50"
 		>
 			<div class="bg-[#F5F5F5] rounded-lg shadow-lg p-8 w-96 flex flex-col gap-4">
 				<div class="text-5xl font-semibold text-center text-[#48CFCB]">YOU WIN!</div>
@@ -32,7 +35,7 @@
 		<!-- Start Game Modal -->
 		<div
 			*ngIf="!isStartGame"
-			class="win-modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50"
+			class="win-modal inset-0 flex items-center justify-center z-50"
 		>
 			<div class="bg-white rounded-lg shadow-lg p-8 w-96 flex flex-col gap-4">
 				<div class="text-5xl font-semibold text-center">SUDOKU</div>
@@ -57,7 +60,10 @@
 		</div>
 		<!-- Start Game Modal -->
 
-		<div class="flex flex-col gap-6">
+		<div
+			*ngIf="isStartGame"
+			class="flex flex-col gap-6"
+		>
 			<loading
 				*ngIf="isLoading"
 				class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50"
