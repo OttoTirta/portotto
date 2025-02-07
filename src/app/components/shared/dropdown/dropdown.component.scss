@@ -1,0 +1,25 @@
+.rotate-on-hover {
+  transition: transform 0.5s ease-in-out;
+}
+
+.dropdown-container:hover {
+  .rotate-on-hover {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown-list>div {
+  border-bottom: 1px #9AA6B2 solid;
+
+  &:hover {
+    background-color: #BCCCDC;
+  }
+
+  &:first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  &:last-child {
+    border-bottom: 0px;
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+}

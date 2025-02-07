@@ -4,8 +4,23 @@
 	<div class="flex header-navbar">
 		<div 
 			*ngFor="let menu of navbarMenu"
-			(click)="onClickNavbarMenu(menu.id)"
-		>{{menu.val}}</div>
+		>
+			<dropdown
+				*ngIf="menu.subMenu; else menuTitle"
+				[dropdownTitle]="menu.val"
+				[dropdownData]="menu.subMenu"
+				(selectedMenu)="onClickNavbarMenu(menu.path+'/'+$event)"
+			></dropdown>
+
+			<ng-template #menuTitle>
+				<div class="px-3 py-2"
+					(click)="onClickNavbarMenu(menu.path)"
+				>
+					{{menu.val}}
+				</div>
+			</ng-template>
+
+		</div>
 	</div>
 	<div>Lang</div>
 </div>

@@ -1,0 +1,26 @@
+<div 
+  class="px-3 py-2 dropdown-container"
+  (mouseenter)="toogleDropdown(true)"
+  (mouseleave)="toogleDropdown(false)"
+>
+  <div class="flex gap-1 items-center" (click)="onClickDropdownMenu('')">
+    <span>{{dropdownTitle}}</span>
+    <img
+      class="h-4 w-4 rotate-on-hover"
+      src="assets/svg/down-chevron.svg" alt="chevron"
+    >
+  </div>
+  
+  <div
+    class="absolute border border-[#9AA6B2] rounded-lg mt-2 dropdown-list bg-[#D9EAFD]"
+    *ngIf="showDropdown"
+  >
+    <div 
+      *ngFor="let menu of dropdownData"
+      class="p-2"
+      (click)="onClickDropdownMenu(menu.path)"
+    >
+      {{menu.val}}
+    </div>
+  </div>
+</div>
