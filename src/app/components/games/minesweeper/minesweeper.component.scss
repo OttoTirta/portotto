@@ -1,0 +1,57 @@
+.closed-cell {
+  background-color: #A1E3F9;
+  border-left: 5px solid #D1F8EF;
+  border-top: 5px solid #D1F8EF;
+  border-right: 5px solid #578FCA;
+  border-bottom: 5px solid #578FCA;
+  
+  &.not-finished:hover {
+    background-color: #578FCA;
+    border-left: 5px solid #A1E3F9;
+    border-top: 5px solid #A1E3F9;
+    border-right: 5px solid #D1F8EF;
+    border-bottom: 5px solid #D1F8EF;
+  }
+}
+
+.reset-button {
+  cursor: default;
+  padding: 2px;
+  background-color: #A1E3F9;
+  border-left: 3px solid #D1F8EF;
+  border-top: 3px solid #D1F8EF;
+  border-right: 4px solid #578FCA;
+  border-bottom: 4px solid #578FCA;
+
+  &:active {
+  border-left: 4px solid #578FCA;
+  border-top: 4px solid #578FCA;
+  border-right: 3px solid #578FCA;
+  border-bottom: 3px solid #578FCA;
+  }
+}
+
+.open-number-1 {
+  color: #578FCA;
+}
+.open-number-2 {
+  color: #57bdca;
+}
+.open-number-3 {
+  color: #1fa626;
+}
+.open-number-4 {
+  color: #afca57;
+}
+.open-number-5 {
+  color: #ca57c0;
+}
+.open-number-6 {
+  color: #578FCA;
+}
+.open-number-7 {
+  color: #ca9257;
+}
+.open-number-8 {
+  color: #ca5757;
+}

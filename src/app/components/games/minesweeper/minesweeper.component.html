@@ -1,5 +1,69 @@
-<div class=" flex flex-col items-center" tabindex="0">
-  <div class="font-jersey text-3xl pt-4">
+<div class="font-jersey flex flex-col items-center">
+  <div class="text-3xl pt-4">
     Minesweeper Ala-ala
+  </div>
+
+  <div class="mt-10 no-select">
+    <div class="border-[5px] p-1 flex justify-between">
+      <!-- Flag Info -->
+      <div class="flex text-4xl items-center w-[30%]">
+        <img src="assets/svg/flag.svg" alt="flag" class="w-5 h-5">
+        <div>: {{flagRemaining}}</div>
+      </div>
+
+      <div class="w-[30%] flex justify-center">
+        <div class="flex flex-col leading-none items-center reset-button w-fit">
+          <img src="assets/svg/reset.svg" alt="reset-icon" class="w-6 h-6">
+          <div>Reset</div>
+        </div>
+      </div>
+      <div class="text-4xl w-[30%] flex justify-end items-center">
+        <div>
+          {{formattedPlayTime}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Minesweeper Board -->
+    <div class="border-[5px] flex">
+      <!-- Minesweeper Row -->
+      <div
+        *ngFor="let mr of minesweeperBoard; let x = index"
+        class="flex flex-col"
+      >
+        <!-- Minesweeper Cell -->
+        <div
+          *ngFor="let mc of mr; let y = index"
+          class="border cursor-default flex justify-center items-center w-8 h-8"
+        >
+          <!-- Closed Cell -->
+          <div
+            *ngIf="!mc.isOpen; else openedCell"
+            (click)="onClickClosedCell(x, y)"
+            (contextmenu)="onRightClickCell($event, x, y)"
+            class="w-full h-full closed-cell {{!isFinishedGame ? 'not-finished' : ''}} cursor-pointer"
+            [ngClass]="{'cursor-default' : isFinishedGame}"
+          >
+            <img src="assets/svg/flag.svg" alt="flag" *ngIf="mc.isFlagged">
+          </div>
+          <!-- Opened Cell -->
+          <ng-template #openedCell>
+            <!-- Mine Cell -->
+            <div
+              *ngIf="mc.isMine"
+              class="w-full h-full flex items-center justify-center"
+              [ngClass]="{'bg-red-500' : x == wrongOpenLocation.x && y == wrongOpenLocation.y}"
+            >
+              <img src="assets/svg/bomb.svg" alt="mine" class="w-4 h-4">
+            </div>
+            <!-- Number Cell -->
+            <div 
+              *ngIf="!mc.isMine && mc.mineNeighbour != 0"
+              class="text-3xl open-number-{{mc.mineNeighbour}}"
+            >{{ mc.mineNeighbour }}</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
