@@ -20,14 +20,14 @@ type MinesweeperCell = {
   templateUrl: './minesweeper.component.html',
   styleUrl: './minesweeper.component.scss'
 })
-export class MinesweeperComponent {
+export class MinesweeperComponent { 
   private timerInterval: any;
   
-  minesweeperWidth = 10;
-  minesweeperHeight = 10;
+  minesweeperWidth = 30;
+  minesweeperHeight = 20;
   minesweeperBoard: MinesweeperCell[][] = [[]];
   mineLocations: MineLocation[] = [];
-  mineAmount = 30;
+  mineAmount = 99;
   flagRemaining = this.mineAmount;
   playTime = 0;
 
@@ -84,17 +84,18 @@ export class MinesweeperComponent {
   }
 
   generateNewGame() {
+    this.finishGame();
     this.wrongOpenLocation = {
       x: -1,
       y: -1,
     }
     this.isFinishedGame = false;
     this.flagRemaining = this.mineAmount;
+    this.playTime = 0;
 
     this.resetBoard();
     this.generateMine();
     this.insertMineToBoard();
-    this.endTimer();
   }
 
   onClickClosedCell(x: number, y: number){
@@ -114,16 +115,47 @@ export class MinesweeperComponent {
         x: x,
         y: y,
       }
-      this.isFinishedGame = true;
-      this.isStartedGame = false;
-      this.endTimer();
+      this.finishGame();
     } else {
       clickedCell.mineNeighbour = this.getNeighbourMineCount(x, y);
+
+      if(clickedCell.mineNeighbour == 0) {
+        this.openNeighbour(x, y);
+      }
+      if (this.isAllNotMineOpened) {
+        this.finishGame();
+      }
     }
+  }
+
+  openNeighbour(xCurr: number, yCurr: number) {
+    const xStart = xCurr == 0 ? xCurr : xCurr-1;
+    const xEnd = xCurr == this.minesweeperBoard.length - 1 ? xCurr : xCurr+1;
+    const yStart = yCurr == 0 ? yCurr : yCurr-1;
+    const yEnd = yCurr == this.minesweeperBoard[0].length - 1 ? yCurr : yCurr+1;
+
+    for (let x = xStart; x < xEnd+1; x++) {
+      for (let y = yStart; y < yEnd+1; y++) {
+        if(!(x == xCurr && y == yCurr) && !this.minesweeperBoard[x][y].isOpen) {
+          this.onClickClosedCell(x, y);
+        }
+      }
+    }
+  }
+
+  get isAllNotMineOpened() {
+    return this.minesweeperBoard.every((row) => {
+      return row.every((cell) => {
+        return cell.isOpen || cell.isMine;
+      })
+    })
   }
 
   onRightClickCell(event: MouseEvent, x: number, y: number) {
     event.preventDefault();
+
+    if(this.isFinishedGame) return;
+
     const clickedCell = this.minesweeperBoard[x][y];
     clickedCell.isFlagged = !clickedCell.isFlagged;
     this.flagRemaining = clickedCell.isFlagged ? this.flagRemaining-1 : this.flagRemaining+1;
@@ -132,6 +164,30 @@ export class MinesweeperComponent {
       this.isStartedGame = true;
       this.startTimer();
     }
+  }
+  onClickNumberCell(xCurr: number, yCurr: number) {
+    const xStart = xCurr == 0 ? xCurr : xCurr-1;
+    const xEnd = xCurr == this.minesweeperBoard.length - 1 ? xCurr : xCurr+1;
+    const yStart = yCurr == 0 ? yCurr : yCurr-1;
+    const yEnd = yCurr == this.minesweeperBoard[0].length - 1 ? yCurr : yCurr+1;
+    let flaggedNeighbourCount = 0;
+    for (let x = xStart; x < xEnd+1; x++) {
+      for (let y = yStart; y < yEnd+1; y++) {
+        if(!(x == xCurr && y == yCurr) && this.minesweeperBoard[x][y].isFlagged) {
+          flaggedNeighbourCount++;
+        }
+      }
+    }
+
+    if(flaggedNeighbourCount == this.minesweeperBoard[xCurr][yCurr].mineNeighbour) {
+      this.openNeighbour(xCurr, yCurr);
+    }
+  }
+
+  finishGame() {
+    this.isFinishedGame = true;
+    this.isStartedGame = false;
+    this.endTimer();
   }
 
   openUnflaggedMines() {
