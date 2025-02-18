@@ -1,0 +1,9 @@
+<div class="skill-frame w-[56px]">
+  <div class="skill-icon transition {{isActive ? 'active-icon' : 'unactive-icon'}}">
+    <div></div>
+    <img [src]="skillIcon" alt="skillIcon">
+  </div>
+  <div class="skill-label font-iceland">
+    {{displayLabel | uppercase}}
+  </div>
+</div>

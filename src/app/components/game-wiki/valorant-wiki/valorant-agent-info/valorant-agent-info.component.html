@@ -1,11 +1,26 @@
 <div class="flex justify-between w-full">
-  <div *ngIf="agent" class="agent-portrait-container">
+  <div class="agent-portrait-container">
     <div class="agent-background">
       <img [src]="agent.background" alt="background">
     </div>
     <div class="agent-portrait">
-      <img [src]="agent.fullPortrait" alt="agent portrait">
+      <img [src]="agent.fullPortraitV2" alt="agent portrait">
     </div>
   </div>
-  <div></div>
+  <div class="w-[45%] p-6 flex flex-col gap-3">
+    <div class="font-iceland text-3xl text-[#ebe8e0cc]">
+      {{agent.role?.displayName | uppercase}}
+    </div>
+    <div class="font-black-ops agent-name">
+      {{agent.displayName | uppercase}}
+    </div>
+    <valorant-agent-skill-info
+      [agentDescription]="agent.description"
+      [skills]="shownAbilities"
+      [role]="agent.role"
+    />
+    <div class="triangle">
+      
+    </div>
+  </div>
 </div>

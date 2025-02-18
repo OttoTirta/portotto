@@ -1,0 +1,21 @@
+<div class="flex flex-col gap-4 w-fit">
+  <div class="flex gap-1">
+    <valorant-skill-frame
+      [skillIcon]="role?.displayIcon ?? ''"
+      skillLabel="INFO"
+      (click)="onSelectInfo('INFO')"
+      [isActive]="getIsSelectedInfo('INFO')"
+    />
+    <valorant-skill-frame
+      *ngFor="let skill of skills"
+      [skillIcon]="skill.displayIcon"
+      [skillLabel]="skill.slot"
+      (click)="onSelectInfo(skill.slot)"
+      [isActive]="getIsSelectedInfo(skill.slot)"
+    />
+  </div>
+  <div class="skill-bottom-border">
+    <div></div>
+    <div></div>
+  </div>
+</div>

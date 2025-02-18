@@ -1,0 +1,14 @@
+.skill-bottom-border {
+  width: 100%;
+  display: flex;
+  & div {
+    width: 50%;
+    height: 1px;
+    &:first-child {
+      background: linear-gradient(to left, #fffa, #fff0);;
+    }
+    &:last-child {
+      background: linear-gradient(to right, #fffa, #fff0);;
+    }
+  }
+}

@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Proza+Libre:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Jersey+15&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anta&family=Black+Ops+One&family=Iceland&family=Jersey+15&display=swap');
 
 
 .font-proza {
@@ -19,6 +18,13 @@
   font-family: "Black Ops One", serif;
 }
 
+.font-iceland {
+  font-family: "Iceland", serif;
+}
+
+.font-anta {
+  font-family: "Anta", serif;
+}
 
 .no-select {
   user-select: none;

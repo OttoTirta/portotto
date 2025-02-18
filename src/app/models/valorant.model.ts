@@ -26,17 +26,21 @@ export interface ValorantAgent {
     assetPath: string;
   } | null;
   recruitmentData: any | null;
-  abilities: {
-    slot: string;
-    displayName: string;
-    description: string;
-    displayIcon: string;
-  }[];
+  abilities: ValorantAgentAbility[];
   voiceLine: any | null;
 };
 
+export interface ValorantAgentAbility {
+  slot: string;
+  displayName: string;
+  description: string;
+  displayIcon: string;
+}
+
 export interface ValorantRole {
   uuid: string;
-  displayName: string;
-  displayIcon: string;
+    displayName: string;
+    description: string;
+    displayIcon: string;
+    assetPath: string;
 }
