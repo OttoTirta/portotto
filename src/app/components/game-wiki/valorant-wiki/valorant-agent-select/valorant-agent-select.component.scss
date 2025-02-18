@@ -1,0 +1,45 @@
+.agents-border {
+  border-top: 2px #fe4857 solid;
+}
+
+.agent-select-table {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 12px;
+  overflow-y: scroll;
+  height: 70vh;
+  max-width: 375px;
+  border-bottom: 2px #ffffff7d solid;
+  padding-bottom: 5px;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ffffff;
+
+    &:hover {
+      background: #aaaaaa;
+    }
+  }
+}
+
+.role-filter-table {
+  display: flex;
+  gap: 11px;
+
+  & div {
+    width: 62px;
+    height: 62px;
+    padding: 16px;
+    border: 2px #ffffff40 solid;
+    background-color: #ffffff25;
+
+    &:hover, &.selected-role {
+      border: 2px #ffffff solid;
+      background-color: #ffffff75;
+    }
+  }
+}

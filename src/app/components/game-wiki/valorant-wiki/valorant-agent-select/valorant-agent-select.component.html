@@ -1,0 +1,27 @@
+<div class="flex flex-col gap-3">
+  <div class="text-6xl font-black-ops py-4 text-[#ebe8e0] agents-border w-fit">
+    Agents
+  </div>
+  
+  <div class="role-filter-table no-select">
+    <div 
+      *ngFor="let role of agentRoles"
+      [ngClass]="{'selected-role' : isSelectedRole(role.uuid)}"
+      (click)="onSelectRole(role.uuid)"
+    >
+      <img [src]="role.displayIcon" alt="{{role.displayName}}'s Icon">
+    </div>
+  </div>
+  
+  <div class="agent-select-table">
+    <div 
+      *ngFor="let agent of filteredAgentsByRole"
+    >
+      <agent-select-frame
+        [agent]="agent"
+        [isSelected]="isAgentSelected(agent.uuid)"
+        (click)="onSelectAgent(agent)"
+      />
+    </div>
+  </div>
+</div>

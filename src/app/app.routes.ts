@@ -3,6 +3,8 @@ import { HomeComponent } from './components/home/home.component';
 import { GamesComponent } from './components/games/games.component';
 import { SudokuComponent } from './components/games/sudoku/sudoku.component';
 import { MinesweeperComponent } from './components/games/minesweeper/minesweeper.component';
+import { GameWikiComponent } from './components/game-wiki/game-wiki.component';
+import { ValorantWikiComponent } from './components/game-wiki/valorant-wiki/valorant-wiki.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +27,16 @@ export const routes: Routes = [
       {
         path: 'minesweeper',
         component: MinesweeperComponent,
+      },
+    ],
+  },
+  {
+    path: 'game-wiki',
+    component: GameWikiComponent,
+    children: [
+      {
+        path: 'valorant',
+        component: ValorantWikiComponent,
       },
     ],
   },

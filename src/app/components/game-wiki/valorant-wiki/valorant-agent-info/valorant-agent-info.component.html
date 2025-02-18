@@ -1,0 +1,11 @@
+<div class="flex justify-between w-full">
+  <div *ngIf="agent" class="agent-portrait-container">
+    <div class="agent-background">
+      <img [src]="agent.background" alt="background">
+    </div>
+    <div class="agent-portrait">
+      <img [src]="agent.fullPortrait" alt="agent portrait">
+    </div>
+  </div>
+  <div></div>
+</div>
