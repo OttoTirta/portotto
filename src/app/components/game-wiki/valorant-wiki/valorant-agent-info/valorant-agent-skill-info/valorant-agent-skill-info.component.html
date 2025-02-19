@@ -1,5 +1,5 @@
-<div class="flex flex-col gap-4 w-fit">
-  <div class="flex gap-1">
+<div class="flex flex-col gap-5 w-full">
+  <div class="flex justify-between">
     <valorant-skill-frame
       [skillIcon]="role?.displayIcon ?? ''"
       skillLabel="INFO"
@@ -17,5 +17,19 @@
   <div class="skill-bottom-border">
     <div></div>
     <div></div>
+  </div>
+  <div
+    *ngIf="getIsSelectedInfo('INFO')"
+    class="font-iceland text-[#fe4654] leading-4 font-[1000] text-lg"
+  >
+    {{ agentDescription }}
+  </div>
+  <div class="flex flex-col gap-2 font-iceland text-[#ebe8e0cc] leading-4 text-lg">
+    <div >
+      {{ informationLabel | uppercase}}
+    </div>
+    <div>
+      {{ informationDescription }}
+    </div>
   </div>
 </div>

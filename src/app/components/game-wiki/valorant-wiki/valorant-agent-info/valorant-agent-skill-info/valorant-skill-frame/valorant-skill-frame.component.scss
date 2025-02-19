@@ -24,12 +24,14 @@
     background: linear-gradient(to top, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
   }
 
-  &.unactive-icon:hover {
-    border-bottom: 2px #ffffff solid;
-    
-    & div {
-      opacity: 1;
-    }
+  
+}
+
+.skill-frame:hover .unactive-icon {
+  border-bottom: 2px #ffffff solid;
+  
+  & div {
+    opacity: 1;
   }
 }
 

@@ -14,7 +14,24 @@ export class ValorantAgentInfoComponent {
 
   get shownAbilities() {
     const filteredSkills = this.agent.abilities.filter((skill) => skill.displayIcon != null);
-    filteredSkills.sort((a, b) => a.slot == "Passive" ? 1 : a.slot.localeCompare(b.slot));
+    filteredSkills.sort((a, b) => this.getAbilitiesIndex(a.slot) - this.getAbilitiesIndex(b.slot));
     return filteredSkills;
+  }
+
+  private getAbilitiesIndex(abilitySlot: string) {
+    switch (abilitySlot) {
+      case "Grenade":
+        return 1;
+      case "Ability1":
+        return 2;
+      case "Ability2":
+        return 3;
+      case "Ultimate":
+        return 4;
+      case "Passive":
+        return 5;
+      default:
+       return -1;
+    }
   }
 }

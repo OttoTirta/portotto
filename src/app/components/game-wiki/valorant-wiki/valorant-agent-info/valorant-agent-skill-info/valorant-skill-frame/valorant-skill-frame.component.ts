@@ -14,11 +14,11 @@ export class ValorantSkillFrameComponent {
 
   get displayLabel() {
     switch (this.skillLabel) {
-      case "Ability1":
-        return 'C';
-      case "Ability2":
-        return 'Q';
       case "Grenade":
+        return 'C';
+      case "Ability1":
+        return 'Q';
+      case "Ability2":
         return 'E';
       case "Ultimate":
         return 'X';

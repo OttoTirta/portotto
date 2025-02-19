@@ -1,13 +1,19 @@
-<div class="bg-[#0f1a23] min-h-[100vh] p-6 flex gap-3 w-screen">
-  <div class="w-[34%]">
-    <valorant-agent-select
-      (selectedAgentEmitter)="onSelectAgent($event)"
-    />
+<div class="bg-[#0f1a23] min-h-[100vh] p-6 gap-3 w-screen no-select">
+  <div class="text-6xl font-black-ops py-4 text-[#ebe8e0] agents-border w-fit">
+    Agents
   </div>
-  <div class="w-[64%]">
-    <valorant-agent-info
-      *ngIf="selectedValorantAgent != null"
-      [agent]="selectedValorantAgent"
-    />
+  
+  <div class="flex">
+    <div class="w-[34%]">
+      <valorant-agent-select
+        (selectedAgentEmitter)="onSelectAgent($event)"
+      />
+    </div>
+    <div class="w-[64%]">
+      <valorant-agent-info
+        *ngIf="selectedValorantAgent != null"
+        [agent]="selectedValorantAgent"
+      />
+    </div>
   </div>
 </div>

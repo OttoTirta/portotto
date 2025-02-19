@@ -1,10 +1,10 @@
 <div class="flex justify-between w-full">
   <div class="agent-portrait-container">
     <div class="agent-background">
-      <img [src]="agent.background" alt="background">
+      <img [src]="agent.background" alt="background" class="no-drag">
     </div>
     <div class="agent-portrait">
-      <img [src]="agent.fullPortraitV2" alt="agent portrait">
+      <img [src]="agent.fullPortraitV2" alt="agent portrait" class="no-drag">
     </div>
   </div>
   <div class="w-[45%] p-6 flex flex-col gap-3">
@@ -19,8 +19,5 @@
       [skills]="shownAbilities"
       [role]="agent.role"
     />
-    <div class="triangle">
-      
-    </div>
   </div>
 </div>

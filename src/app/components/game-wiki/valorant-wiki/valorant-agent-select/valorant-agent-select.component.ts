@@ -63,8 +63,6 @@ export class ValorantAgentSelectComponent {
   onSelectAgent(agent: ValorantAgent) {
     this.selectedAgentUuid = agent.uuid;
     this.selectedAgentEmitter.emit(agent);
-    console.log(agent.abilities);
-    
   }
 
   onSelectRole(uuid: string) {
