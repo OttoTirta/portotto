@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { ValorantAgentAbility, ValorantRole } from '../../../../../models/valorant.model';
+import { ValorantAgentAbility, ValorantRole } from '../../../../../../models/valorant.model';
 import { ValorantSkillFrameComponent } from './valorant-skill-frame/valorant-skill-frame.component';
 import { CommonModule } from '@angular/common';
 

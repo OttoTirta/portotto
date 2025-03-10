@@ -9,7 +9,8 @@ import { ValorantRole } from '../../models/valorant.model';
 export class ValorantService {
   private valorantAPILink = "https://valorant-api.com/v1";
   private valoLink = {
-    agents: this.valorantAPILink+'/agents?isPlayableCharacter=true'
+    agents: this.valorantAPILink+'/agents?isPlayableCharacter=true',
+    weapons: this.valorantAPILink+'/weapons'
   }
   
 
@@ -19,6 +20,10 @@ export class ValorantService {
 
   getValorantAgents() {
     return this.http.get<any>(this.valoLink.agents);
+  }
+
+  getWeapons() {
+    return this.http.get<any>(this.valoLink.weapons);
   }
 
   getValorantRoles() {

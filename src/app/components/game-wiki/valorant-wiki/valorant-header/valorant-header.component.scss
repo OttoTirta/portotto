@@ -1,0 +1,52 @@
+.header-buttons>div {
+  position: relative;
+  width: 200px; 
+  height: 40px;
+  color: #ffffffcf;
+  background-color: #f8f8f820;
+  cursor: pointer;
+  
+  & div{
+    border-bottom: 2px #fe4857 solid;
+    position: absolute;
+    height: 40px;
+    width: 200px; 
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    &:first-child {
+      background-color: #fe485771;
+      transition: transform 0.5s linear(0 0%, 0 1.8%, 0.01 3.6%, 0.03 6.35%, 0.07 9.1%, 0.13 11.4%, 0.19 13.4%, 0.27 15%, 0.34 16.1%, 0.54 18.35%, 0.66 20.6%, 0.72 22.4%, 0.77 24.6%, 0.81 27.3%, 0.85 30.4%, 0.88 35.1%, 0.92 40.6%, 0.94 47.2%, 0.96 55%, 0.98 64%, 0.99 74.4%, 1 86.4%, 1 100%);
+    }
+  }
+
+  &:first-child {
+    text-align: left;
+    clip-path: polygon(0% 100%, 80% 100%, 100% 0, 0 0);
+    & div:first-child {
+      transform: translateX(200px);
+    }
+  }
+  &:last-child {
+    text-align: end;
+    clip-path: polygon(20% 100%, 100% 100%, 100% 0, 0 0);
+    & div:first-child {
+      transform: translateX(-200px);
+    }
+  }
+
+  &:hover {
+    & div:first-child {
+      transform: translateX(0px);
+    }
+  }
+
+  &.selected-header {
+    & div {
+      border-bottom: 2px rgba(255, 255, 255, 0.84) solid;
+    }
+    background-color: #fe485720;
+  }
+}

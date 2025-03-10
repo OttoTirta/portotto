@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ValorantService } from '../../../../services/valorantService/valorant.service';
+import { ValorantService } from '../../../../../services/valorantService/valorant.service';
 import { CommonModule } from '@angular/common';
-import { ValorantAgent, ValorantRole } from '../../../../models/valorant.model';
+import { ValorantAgent, ValorantRole } from '../../../../../models/valorant.model';
 import { AgentSelectFrameComponent } from './agent-select-frame/agent-select-frame.component';
 
 @Component({

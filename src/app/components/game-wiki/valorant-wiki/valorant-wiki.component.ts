@@ -1,19 +1,23 @@
 import { Component } from '@angular/core';
-import { ValorantAgentSelectComponent } from './valorant-agent-select/valorant-agent-select.component';
-import { ValorantAgent } from '../../../models/valorant.model';
-import { ValorantAgentInfoComponent } from './valorant-agent-info/valorant-agent-info.component';
+import { ValorantAgentsComponent } from './valorant-agents/valorant-agents.component';
 import { CommonModule } from '@angular/common';
+import { ValorantHeaderComponent } from './valorant-header/valorant-header.component';
+import { ValorantWeaponsComponent } from './valorant-weapons/valorant-weapons.component';
 
 @Component({
   selector: 'app-valorant-wiki',
-  imports: [CommonModule, ValorantAgentSelectComponent, ValorantAgentInfoComponent],
+  imports: [CommonModule, ValorantAgentsComponent, ValorantHeaderComponent, ValorantWeaponsComponent],
   templateUrl: './valorant-wiki.component.html',
   styleUrl: './valorant-wiki.component.scss'
 })
 export class ValorantWikiComponent {
-  selectedValorantAgent: ValorantAgent | null = null;
+  private selectedHeaderMenu: string = 'agent';
 
-  onSelectAgent(agent: ValorantAgent) {
-    this.selectedValorantAgent = agent;
+  onSelectedHeaderMenu(selectedHeaderMenu: string) {
+    this.selectedHeaderMenu = selectedHeaderMenu;
+  }
+
+  isSelectedMenu(menu: string) {
+    return this.selectedHeaderMenu == menu;
   }
 }

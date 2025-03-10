@@ -1,23 +1,15 @@
-<div class="bg-[#0f1a23] min-h-[100vh] p-6 gap-3 w-screen no-select">
-  <div class="text-6xl font-black-ops py-4 text-[#ebe8e0] agents-border w-fit">
-    Agents
+<div class="min-h-screen flex flex-col justify-between bg-[#0f1a23]">
+  <valorant-header
+    (onSelectMenu)="onSelectedHeaderMenu($event)"
+  />
+  <valorant-agents
+    *ngIf="isSelectedMenu('agent')"
+  />
+  <valorant-weapons
+    *ngIf="isSelectedMenu('weapon')"
+  />
+  <div class="bg-[#fe4654] w-screen flex gap-2 justify-center items-center p-3 font-iceland">
+    <div>Data By</div>
+    <a href="https://valorant-api.com/" target="_blank" class="font-bold">Valorant-API</a>
   </div>
-  
-  <div class="flex">
-    <div class="w-[34%]">
-      <valorant-agent-select
-        (selectedAgentEmitter)="onSelectAgent($event)"
-      />
-    </div>
-    <div class="w-[64%]">
-      <valorant-agent-info
-        *ngIf="selectedValorantAgent != null"
-        [agent]="selectedValorantAgent"
-      />
-    </div>
-  </div>
-</div>
-<div class="bg-[#fe4654] w-screen flex gap-2 justify-center items-center p-3 font-iceland">
-  <div>Data By</div>
-  <a href="https://valorant-api.com/" target="_blank" class="font-bold">Valorant-API</a>
 </div>

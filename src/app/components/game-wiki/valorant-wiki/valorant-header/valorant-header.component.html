@@ -1,0 +1,16 @@
+<div class="w-screen flex justify-center header-buttons font-black-ops no-select">
+  <div
+    [ngClass]="{'selected-header': isAgentSelected}"
+    (click)="onClickAgent()"
+  >
+    <div></div>
+    <div>Agent</div>
+  </div>
+  <div 
+    [ngClass]="{'selected-header': isWeaponSelected}"
+    (click)="onClickWeapon()"
+  >
+    <div></div>
+    <div>Weapon</div>
+  </div>
+</div>

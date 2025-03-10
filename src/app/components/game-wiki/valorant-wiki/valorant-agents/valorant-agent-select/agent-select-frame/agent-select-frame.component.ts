@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ValorantAgent } from '../../../../../models/valorant.model';
+import { ValorantAgent } from '../../../../../../models/valorant.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
