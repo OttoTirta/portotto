@@ -1,67 +1,101 @@
-<div class="font-jersey flex flex-col">
-  <div class="text-3xl pt-4 w-full flex justify-center">
-    Minesweeper Ala-ala
+<div class="h-screen w-full bg-[#0F172A] text-slate-300 font-jersey p-8 flex flex-col items-center overflow-auto selection:bg-rose-500 selection:text-white">
+  
+  <!-- Header -->
+  <div class="mb-8 text-center space-y-2 relative">
+    <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-transparent via-rose-500 to-transparent shadow-[0_0_10px_#f43f5e]"></div>
+    <h1 class="text-6xl text-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.6)] font-black-ops tracking-wider">MINESWEEPER</h1>
+    <div class="text-slate-500 tracking-[0.3em] text-sm uppercase">Cyber-Retro Edition</div>
   </div>
 
-  <div [ngClass]="{'flex justify-center w-full' : minesweeperWidth < 44}">
-    <div class="no-select max-w-full p-6">
-      <div class="border-[5px] p-1 flex justify-between">
-        <!-- Flag Info -->
-        <div class="flex text-4xl items-center w-[30%]">
-          <img src="assets/svg/flag.svg" alt="flag" class="w-5 h-5">
-          <div>: {{flagRemaining}}</div>
+  <div class="flex flex-col items-center gap-6" [ngClass]="{'w-full' : minesweeperWidth < 44}">
+    
+    <!-- Game Console -->
+    <div class="bg-[#1a2336] p-2 rounded-lg border-4 border-[#2d3748] shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-w-full">
+      
+      <!-- HUD / Info Bar -->
+      <div class="bg-[#0F172A] border-b-4 border-[#2d3748] p-4 flex justify-between items-center mb-1 rounded-sm shadow-inner relative overflow-hidden">
+        <!-- Scanline effect -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none z-10 opacity-20"></div>
+
+        <!-- Flag Counter -->
+        <div class="bg-black/50 border border-slate-700 px-4 py-2 rounded flex items-center gap-3 min-w-[140px] shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
+          <img src="assets/svg/flag.svg" alt="flag" class="w-6 h-6 filter drop-shadow-[0_0_3px_rgba(255,50,50,0.8)]">
+          <div class="font-mono text-4xl text-rose-500 leading-none tracking-widest drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]">
+            {{flagRemaining < 0 ? 0 : (flagRemaining | number:'3.0-0')?.replace(',', '') || '000'}}
+          </div>
         </div>
   
-        <div class="w-[30%] flex justify-center">
-          <div class="flex flex-col leading-none items-center reset-button w-fit" (click)="generateNewGame()">
-            <img src="assets/svg/reset.svg" alt="reset-icon" class="w-6 h-6">
-            <div>Reset</div>
-          </div>
-        </div>
-        <div class="text-4xl w-[30%] flex justify-end items-center">
-          <div>
+        <!-- Reset Button -->
+        <button 
+          class="group relative w-16 h-16 bg-[#2d3748] border-b-4 border-r-4 border-[#1a202c] active:border-0 active:translate-y-1 active:translate-x-1 rounded transition-all flex items-center justify-center hover:bg-[#3d4a61]"
+          (click)="generateNewGame()"
+        >
+          <div class="absolute inset-0 bg-rose-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <img src="assets/svg/reset.svg" alt="reset-icon" class="w-8 h-8 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform">
+        </button>
+
+        <!-- Timer -->
+        <div class="bg-black/50 border border-slate-700 px-4 py-2 rounded flex items-center gap-3 min-w-[140px] justify-end shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]">
+          <div class="font-mono text-4xl text-emerald-400 leading-none tracking-widest drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]">
             {{formattedPlayTime}}
           </div>
+          <div class="text-emerald-600 font-bold text-xs uppercase tracking-widest -rotate-90 origin-center bg-emerald-900/20 px-1 rounded">Time</div>
         </div>
       </div>
   
       <!-- Minesweeper Board -->
-      <div class="border-[5px] flex overflow-scroll max-w-full">
-        <!-- Minesweeper Row -->
+      <div class="bg-[#2d3748] p-1 border-t-4 border-l-4 border-[#1a202c] overflow-auto max-w-[90vw] max-h-[70vh] shadow-xl">
         <div
           *ngFor="let mr of minesweeperBoard; let x = index"
-          class="flex flex-col"
+          class="flex"
         >
           <!-- Minesweeper Cell -->
           <div
             *ngFor="let mc of mr; let y = index"
-            class="border cursor-default flex justify-center items-center w-8 h-8"
+            class="w-8 h-8 select-none"
           >
             <!-- Closed Cell -->
             <div
               *ngIf="!mc.isOpen; else openedCell"
               (click)="onClickClosedCell(x, y)"
               (contextmenu)="onRightClickCell($event, x, y)"
-              class="w-full h-full closed-cell {{!isFinishedGame ? 'not-finished cursor-pointer' : 'cursor-default'}}"
+              class="w-full h-full border-t-[3px] border-l-[3px] border-b-[3px] border-r-[3px] 
+                     border-t-[#4a5568] border-l-[#4a5568] border-b-[#1a202c] border-r-[#1a202c]
+                     bg-[#2d3748] hover:bg-[#3d4a61] transition-colors relative flex items-center justify-center
+                     {{!isFinishedGame ? 'cursor-pointer' : 'cursor-default'}}"
             >
-              <img src="assets/svg/flag.svg" alt="flag" *ngIf="mc.isFlagged">
+              <img *ngIf="mc.isFlagged" src="assets/svg/flag.svg" alt="flag" class="w-5 h-5 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
             </div>
+            
             <!-- Opened Cell -->
             <ng-template #openedCell>
               <!-- Mine Cell -->
               <div
                 *ngIf="mc.isMine"
-                class="w-full h-full flex items-center justify-center"
-                [ngClass]="{'bg-red-500' : x == wrongOpenLocation.x && y == wrongOpenLocation.y}"
+                class="w-full h-full flex items-center justify-center border border-[#1a202c]"
+                [ngClass]="{'bg-rose-900' : x == wrongOpenLocation.x && y == wrongOpenLocation.y, 'bg-[#1a2336]': !(x == wrongOpenLocation.x && y == wrongOpenLocation.y)}"
               >
-                <img src="assets/svg/bomb.svg" alt="mine" class="w-4 h-4">
+                <img src="assets/svg/bomb.svg" alt="mine" class="w-6 h-6 animate-pulse filter drop-shadow-[0_0_5px_rgba(244,63,94,0.8)]">
               </div>
+              
               <!-- Number Cell -->
               <div 
-                *ngIf="!mc.isMine && mc.mineNeighbour != 0"
-                class="text-3xl open-number-{{mc.mineNeighbour}}"
+                *ngIf="!mc.isMine && mc.mineNeighbour >= 0"
+                class="w-full h-full flex items-center justify-center bg-[#0F172A] border border-[#1e293b]/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]
+                       text-2xl font-black font-mono cursor-default hover:bg-[#162036] transition-colors"
+                [ngClass]="{
+                  'text-transparent': mc.mineNeighbour === 0,
+                  'text-blue-400 drop-shadow-[0_0_5px_rgba(96,165,250,0.6)]': mc.mineNeighbour === 1,
+                  'text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.6)]': mc.mineNeighbour === 2,
+                  'text-rose-400 drop-shadow-[0_0_5px_rgba(251,113,133,0.6)]': mc.mineNeighbour === 3,
+                  'text-purple-400 drop-shadow-[0_0_5px_rgba(192,132,252,0.6)]': mc.mineNeighbour === 4,
+                  'text-amber-400': mc.mineNeighbour === 5,
+                  'text-cyan-400': mc.mineNeighbour === 6,
+                  'text-orange-500': mc.mineNeighbour === 7,
+                  'text-fuchsia-500': mc.mineNeighbour === 8
+                }"
                 (click)="onClickNumberCell(x, y)"
-              >{{ mc.mineNeighbour }}</div>
+              >{{ mc.mineNeighbour > 0 ? mc.mineNeighbour : '' }}</div>
             </ng-template>
           </div>
         </div>

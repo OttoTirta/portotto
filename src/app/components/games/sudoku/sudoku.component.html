@@ -1,92 +1,107 @@
-<div class="h-screen" tabindex="0" (keyup)="keyboardEventListener($event)">
+<div class="h-screen w-full bg-[#0F172A] text-cyan-400 font-anta selection:bg-cyan-500 selection:text-white" tabindex="0" (keyup)="keyboardEventListener($event)">
   <div
-		class="flex items-center justify-center h-full"
-		[ngClass]="{'bg-black bg-opacity-25' : isWinGame || !isStartGame}"
+		class="flex items-center justify-center h-full relative overflow-hidden"
 	>
+    <!-- Background Effects -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800 via-[#0F172A] to-black opacity-80 pointer-events-none"></div>
+    <div class="absolute top-0 right-0 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl animate-pulse delay-700"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl animate-pulse"></div>
+
 		<!-- Win Modal -->
 		<div
 			*ngIf="isWinGame"
-			class="win-modal inset-0 flex items-center justify-center z-50"
+			class="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-md bg-black/60"
 		>
-			<div class="bg-[#F5F5F5] rounded-lg shadow-lg p-8 w-96 flex flex-col gap-4">
-				<div class="text-5xl font-semibold text-center text-[#48CFCB]">YOU WIN!</div>
-        <div class="flex gap-1 flex-col text-[#229799]">
-          <div class="text-xl flex gap-1">
-            <div class="w-1/2 flex justify-end">Your Time</div>
-            <div>: <span>{{formatedPlayTime}}</span></div>
+			<div class="bg-slate-900/90 border border-cyan-500/30 rounded-2xl shadow-[0_0_50px_rgba(34,211,238,0.2)] p-10 w-96 flex flex-col gap-6 text-center relative overflow-hidden">
+        <!-- Glow effect -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></div>
+        
+				<div class="font-black-ops text-6xl text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] tracking-wider">VICTORY</div>
+        
+        <div class="flex flex-col gap-3 text-slate-300">
+          <div class="text-xl flex justify-between border-b border-white/10 pb-2">
+            <span class="text-slate-400">Time</span>
+            <span class="font-mono text-cyan-300">{{formatedPlayTime}}</span>
           </div>
-          <div class="text-xl flex gap-1">
-            <div class="w-1/2 flex justify-end">Your Best Time</div>
-            <div>: <span>{{formattedBestTime}}</span></div>
+          <div class="text-xl flex justify-between border-b border-white/10 pb-2">
+            <span class="text-slate-400">Best</span>
+            <span class="font-mono text-purple-300">{{formattedBestTime}}</span>
           </div>
         </div>
-				<div class="w-full">
-					<button
-						class="bg-[#424242] text-[#48CFCB] px-4 py-2 rounded-lg hover:bg-[#626262] w-full"
-						(click)="resetTable()"
-					>
-						New Game
-					</button>
-				</div>
+
+				<button
+					class="w-full py-3 bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 border border-cyan-500/50 rounded-lg transition-all duration-300 font-bold tracking-widest hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
+					(click)="resetTable()"
+				>
+					PLAY AGAIN
+				</button>
 			</div>
 		</div>
-		<!-- Win Modal -->
 
 		<!-- Start Game Modal -->
 		<div
 			*ngIf="!isStartGame"
-			class="win-modal inset-0 flex items-center justify-center z-50"
+			class="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-black/70"
 		>
-			<div class="bg-white rounded-lg shadow-lg p-8 w-96 flex flex-col gap-4">
-				<div class="text-5xl font-semibold text-center">SUDOKU</div>
-				<p>You have saved progress of previous game, do you want to continue or start new game?</p>
-				<div class="flex gap-2">
+			<div class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-8 w-[28rem] flex flex-col gap-6 relative">
+        <div class="absolute -top-10 left-1/2 -translate-x-1/2 px-6 py-2 bg-slate-900 border border-slate-700 rounded-t-xl border-b-0">
+          <div class="text-sm tracking-widest text-slate-500 uppercase">System Ready</div>
+        </div>
+
+				<div class="text-6xl font-black-ops text-center text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500">SUDOKU</div>
+				<p class="text-center text-slate-400 leading-relaxed">
+          Previous session data detected. Resume simulation or initialize new sequence?
+        </p>
+				<div class="flex gap-4 font-bold">
 					<button
             *ngIf="hasSavedGame"
-						class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full"
+						class="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-lg hover:shadow-blue-500/30 transition-all clip-path-button"
 						(click)="continueSavedGame()"
 					>
-						Continue
+						RESUME
 					</button>
 					<button
-						class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 w-full"
-            [ngClass]="{'hover:bg-slate-400 bg-slate-300': hasSavedGame}"
+						class="flex-1 py-3 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg border border-slate-600 hover:border-slate-500 transition-all clip-path-button"
 						(click)="resetTable()"
 					>
-						New Game
+						NEW GAME
 					</button>
 				</div>
 			</div>
 		</div>
-		<!-- Start Game Modal -->
 
 		<div
 			*ngIf="isStartGame"
-			class="flex flex-col gap-6"
+			class="flex flex-col gap-8 items-center z-10"
 		>
 			<loading
 				*ngIf="isLoading"
-				class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-50"
+				class="fixed inset-0 flex items-center justify-center bg-black/80 z-50"
 			></loading>
+      
 			<!-- Sudoku table start -->
-			<div>
-				<div class="timer">
+			<div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-700 shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-sm">
+				<div class="text-center mb-6 font-mono text-3xl text-cyan-400 tracking-[0.2em] relative">
+          <span class="absolute left-0 top-1/2 -translate-y-1/2 h-[1px] w-12 bg-cyan-900"></span>
 					{{formatedPlayTime}}
+          <span class="absolute right-0 top-1/2 -translate-y-1/2 h-[1px] w-12 bg-cyan-900"></span>
 				</div>
+
 				<div 
 					*ngFor="let tableRow of sudokuTable; let tR = index"
 					class="flex"
 				>
-					<div *ngFor="let tableBox of tableRow; let tB = index" class="border-2">
+					<div *ngFor="let tableBox of tableRow; let tB = index" class="border-2 border-slate-600">
 						<div *ngFor="let boxRow of tableBox; let bR = index" class="flex">
 							<div 
 								*ngFor="let sudokuCell of boxRow; let sC = index"
-								class="w-[7vh] h-[7vh] border sudoku-cell flex items-center justify-center"
+								class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 border border-slate-700/50 flex items-center justify-center text-xl sm:text-2xl transition-colors duration-150 cursor-pointer select-none"
 								[ngClass]="{
-									'active-cell': sudokuCell.isActive,
-									'locked-cell': sudokuCell.isLocked,
-									'neighbour-cell': sudokuCell.isNeighbour
-									}"
+                  'bg-cyan-500/20 text-cyan-300 shadow-[inset_0_0_10px_rgba(34,211,238,0.2)]': sudokuCell.isActive,
+                  'text-slate-500 font-bold bg-slate-800/50': sudokuCell.isLocked,
+                  'bg-slate-800/30': sudokuCell.isNeighbour && !sudokuCell.isActive,
+                  'hover:bg-white/5': !sudokuCell.isActive
+                }"
 								(click)="onClickCell(tR, tB, bR, sC)"
 								>
 								{{sudokuCell.val != 0 ? sudokuCell.val : ''}}
@@ -96,11 +111,24 @@
 				</div>
 			</div>
 			<!-- Sudoku table end -->
-			<div class="flex flex-wrap gap-3 max-w-[63vh]" *ngIf="isStartGame">
+
+      <!-- Controls -->
+			<div class="flex flex-wrap gap-2 sm:gap-4 justify-center max-w-2xl" *ngIf="isStartGame">
 				<div
 					*ngFor="let buttonVal of sudokuButton"
-					class="border border-[#a6a5a5] rounded-lg py-3 px-[18px] cursor-pointer"
-					[ngClass]="{'disabled-sudoku-button': !isAnyActiveCell && buttonVal!='Reset'}"
+					class="
+            w-10 h-10 sm:w-14 sm:h-14 
+            flex items-center justify-center 
+            rounded-lg 
+            font-black-ops text-lg sm:text-xl
+            transition-all duration-200
+            shadow-lg
+          "
+          [ngClass]="{
+            'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed': !isAnyActiveCell && buttonVal!='Reset',
+            'bg-cyan-900/40 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_15px_rgba(34,211,238,0.6)] cursor-pointer active:scale-95': isAnyActiveCell || buttonVal=='Reset',
+             'w-auto px-6': buttonVal == 'Reset'
+          }"
 					(click)="onClickActionButton(buttonVal)"
 				>
 					{{buttonVal}}

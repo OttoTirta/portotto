@@ -1,10 +1,14 @@
 <div class="flex justify-between w-full">
-  <div class="agent-portrait-container">
-    <div class="agent-background">
-      <img [src]="agent.background" alt="background" class="no-drag">
+  <div class="agent-portrait-container relative min-h-[500px]">
+    <div *ngIf="!isAllImagesLoaded" class="absolute inset-0 z-50 flex items-center justify-center bg-[#0f1a23]">
+      <loading></loading>
     </div>
-    <div class="agent-portrait">
-      <img [src]="agent.fullPortraitV2" alt="agent portrait" class="no-drag">
+    
+    <div class="agent-background" [class.invisible]="!isAllImagesLoaded">
+      <img [src]="agent.background" alt="background" class="no-drag" loading="lazy" decoding="async" (load)="onBackgroundLoad()">
+    </div>
+    <div class="agent-portrait" [class.invisible]="!isAllImagesLoaded">
+      <img [src]="agent.fullPortraitV2" alt="agent portrait" class="no-drag" loading="lazy" decoding="async" (load)="onPortraitLoad()">
     </div>
   </div>
   <div class="w-[45%] p-6 flex flex-col gap-3">

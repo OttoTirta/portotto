@@ -1,16 +1,40 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ValorantAgent } from '../../../../../models/valorant.model';
 import { CommonModule } from '@angular/common';
 import { ValorantAgentSkillInfoComponent } from './valorant-agent-skill-info/valorant-agent-skill-info.component';
+import { LoadingComponent } from '../../../../shared/loading/loading.component';
 
 @Component({
   selector: 'valorant-agent-info',
-  imports: [CommonModule, ValorantAgentSkillInfoComponent],
+  imports: [CommonModule, ValorantAgentSkillInfoComponent, LoadingComponent],
   templateUrl: './valorant-agent-info.component.html',
   styleUrl: './valorant-agent-info.component.scss'
 })
-export class ValorantAgentInfoComponent {
+export class ValorantAgentInfoComponent implements OnChanges {
   @Input() agent!: ValorantAgent;
+
+  isBackgroundLoaded = false;
+  isPortraitLoaded = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['agent']) {
+      this.isBackgroundLoaded = false;
+      this.isPortraitLoaded = false;
+    }
+  }
+
+  onBackgroundLoad() {
+    this.isBackgroundLoaded = true;
+  }
+
+  onPortraitLoad() {
+    this.isPortraitLoaded = true;
+  }
+
+  get isAllImagesLoaded() {
+    // If agent has no background (rare/model dependent), treat as loaded
+    return this.isBackgroundLoaded && this.isPortraitLoaded;
+  }
 
   get shownAbilities() {
     const filteredSkills = this.agent.abilities.filter((skill) => skill.displayIcon != null);

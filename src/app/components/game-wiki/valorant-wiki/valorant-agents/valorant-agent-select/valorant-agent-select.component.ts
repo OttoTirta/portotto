@@ -76,4 +76,12 @@ export class ValorantAgentSelectComponent {
   isAgentSelected(uuid: string) {
     return uuid == this.selectedAgentUuid;
   }
+
+  trackByAgentUuid(index: number, agent: ValorantAgent): string {
+    return agent.uuid;
+  }
+
+  trackByRoleUuid(index: number, role: ValorantRole): string {
+    return role.uuid;
+  }
 }

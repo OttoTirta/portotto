@@ -1,17 +1,17 @@
 <div class="flex flex-col gap-3">
   <div class="role-filter-table no-select">
     <div 
-      *ngFor="let role of agentRoles"
+      *ngFor="let role of agentRoles; trackBy: trackByRoleUuid"
       [ngClass]="{'selected-role' : isSelectedRole(role.uuid)}"
       (click)="onSelectRole(role.uuid)"
     >
-      <img [src]="role.displayIcon" alt="{{role.displayName}}'s Icon" class="no-drag">
+      <img [src]="role.displayIcon" alt="{{role.displayName}}'s Icon" class="no-drag" loading="lazy" decoding="async">
     </div>
   </div>
   
   <div class="agent-select-table">
     <div 
-      *ngFor="let agent of filteredAgentsByRole"
+      *ngFor="let agent of filteredAgentsByRole; trackBy: trackByAgentUuid"
     >
       <agent-select-frame
         [agent]="agent"
